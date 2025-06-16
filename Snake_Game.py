@@ -34,15 +34,10 @@ screensize.fill(colorPINK)
 pygame.display.set_caption('Snake_Game')
 
 
-"""
-# Creating the snake as a sprite function
-snake = pygame.sprite.Sprite()
-snake.rect = pygame.Rect(300, 400, 18, 20)
-snake.speed = 1
-snake_grow = pygame.Rect(0,0,18,20)
-"""
+
 
 # main direction the snake moves
+# automatically starts moving right
 direction = 'Right'
 
 
@@ -153,15 +148,19 @@ while Running:
         # if direction is left move the snake head left 20
         if direction == 'Left':
             snakes[0].rect.x -= 20
+
         # if direction is right move the snake head right 20
         if direction == 'Right':
             snakes[0].rect.x += 20
+
         # if direction is up move snake head up 20
         if direction == 'Up':
             snakes[0].rect.y -= 20
+
         # if direction is down move the snake head down 20
         if direction == 'Down':
             snakes[0].rect.y += 20
+
 
 
 
@@ -184,8 +183,10 @@ while Running:
                 Size.rect.y -= 6
 
         # makes the user died when it collides with itself
-        #if pygame.sprite.collide_rect(snak):
-            pass
+        #checks if snake head collides with the snake body
+        for i in range(2, len(snakes)):
+            if pygame.sprite.collide_rect(snakes[0], snakes[i]):
+                playing = False
 
 
             
@@ -215,10 +216,7 @@ while Running:
         # Fill screen with pink
         screensize.fill(colorPINK)
 
-        # Create the Score text to show player score
-        SecondFont = pygame.font.SysFont('Comic Sans', 30)
-        SCORE = SecondFont.render(f'Score:{Score}',True, colorGREEN, colorPINK)
-        screensize.blit(SCORE, (10, 10))
+
 
 
         # drawing/bliting the snake on screen
@@ -227,8 +225,17 @@ while Running:
 
 
 
+
+
         # Create the apple
         screensize.blit(IMAGE, Size.rect)
+
+
+        # Create the Score text to show player score
+        # it is also the last thing on screen so the snake can go under it
+        SecondFont = pygame.font.SysFont('Comic Sans', 30)
+        SCORE = SecondFont.render(f'Score:{Score}', True, colorGREEN)
+        screensize.blit(SCORE, (10, 10))
     # makes a whole new screen
     if playing is False:
         screensize.fill(colorPINK)
@@ -240,11 +247,8 @@ while Running:
 
         # bliting/drawing the play again button on screen
         screensize.blit(again,P_again)
+
     # updating screen
     pygame.display.update()
     # Making the game go 60 frames per second
     clock.tick(10)
-
-
-
-
